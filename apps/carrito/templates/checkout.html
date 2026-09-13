@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+
+<div class="checkout">
+
+    <section class="checkout-facturacion">
+
+        <h1>DETALLES DE FACTURACIÓN</h1>
+
+        <div class="fila campos-2">
+            <div class="campo">
+                <label>Nombre <span>*</span></label>
+                <input type="text" name="nombre" placeholder="Nombre" required>
+            </div>
+
+            <div class="campo">
+                <label>Apellidos <span>*</span></label>
+                <input type="text" name="apellidos" placeholder="Apellidos" required>
+            </div>
+        </div>
+
+        <div class="campo">
+            <label>Nit <span>*</span></label>
+            <input type="text" name="nit" placeholder="Nit" required>
+        </div>
+
+        <div class="campo">
+            <label>Dirección <span>*</span></label>
+            <input type="text" name="direccion" placeholder="Dirección" required>
+        </div>
+
+        <h2>Datos de entrega</h2>
+
+        <div class="campo">
+            <label>Nombre <span>*</span></label>
+            <input type="text" name="nombre_entrega" placeholder="Nombre" required>
+        </div>
+
+        <div class="fila campos-2">
+            <div class="campo">
+                <label>Teléfono <span>*</span></label>
+                <input type="text" name="telefono" placeholder="Teléfono" required>
+            </div>
+
+            <div class="campo">
+                <label>Apellido <span>*</span></label>
+                <input type="text" name="apellido_entrega" placeholder="Apellido" required>
+            </div>
+        </div>
+
+        <div class="fila campos-2">
+            <div class="campo">
+                <label>Departamento <span>*</span></label>
+                <select name="departamento" required>
+                    <option>Guatemala</option>
+                    <option>Alta Verapaz</option>
+                    <option>Escuintla</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label>Dirección de correo electrónico <span>*</span></label>
+                <input type="email" name="correo" placeholder="Dirección de correo electrónico" required>
+            </div>
+        </div>
+
+        <div class="campo">
+            <label>Municipio / Ciudad <span>*</span></label>
+            <input type="text" name="municipio" placeholder="Municipio / Ciudad" required>
+        </div>
+
+        <div class="campo" style="margin-bottom: 0;">
+            <label>Dirección <span>*</span></label>
+            <input type="text" name="direccion_entrega" placeholder="Dirección" required>
+        </div>
+
+    </section>
+
+    <section class="checkout-pedido">
+
+    <h1>TU PEDIDO</h1>
+
+    <div class="pedido-cabecera">
+        <strong>Producto</strong>
+        <strong>Subtotal</strong>
+    </div>
+
+    {% for item in productos_carrito %}
+
+        <div class="producto">
+            <span>
+                {{ item.producto.nombre }} × {{ item.cantidad }}
+            </span>
+
+            <span>
+                Q {{ item.subtotal|floatformat:2 }}
+            </span>
+        </div>
+
+    {% endfor %}
+
+    <div class="subtotal">
+        <strong>Subtotal</strong>
+
+        <strong>
+            Q {{ total|floatformat:2 }}
+        </strong>
+    </div>
+
+    <div class="total">
+        <strong>Total</strong>
+
+        <strong>
+            Q {{ total|floatformat:2 }}
+        </strong>
+    </div>
+
+</section>
+
+<div class="metodo-pago">
+
+    <h2>Método de pago</h2>
+
+    <label class="opcion-pago activo">
+        <span class="radio-custom">
+            <span class="radio-dot"></span>
+        </span>
+
+        <input
+            type="radio"
+            name="metodo_pago"
+            value="contra_entrega"
+            checked
+        >
+
+        <span>Pago contra entrega</span>
+    </label>
+
+    <p class="descripcion-pago">
+        Pagarás tu pedido cuando recibas los productos.
+    </p>
+
+    <button type="submit" class="boton-pedido">
+        REALIZAR EL PEDIDO
+    </button>
+
+</div>
+
+</form>
+
+{% endblock %}

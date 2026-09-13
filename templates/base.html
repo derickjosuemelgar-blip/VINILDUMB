@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}
+        VINILDUMB
+      {% endblock %}
+    </title>
+
+    <link rel="icon" type="image/jpeg" href="{% static 'img/vinilo.jpg' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sedgwick+Ave+Display&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}?v=3" />
+  </head>
+  <body>
+    <div class="contenedor-sitio">
+      <div class="texto-grafiti grafiti-izq">VINILDUMB</div>
+
+      <div class="texto-grafiti grafiti-der">VINYL STORE</div>
+    </div>
+
+    <header class="navbar">
+      <div class="navbar-contenedor">
+        <a class="marca" href="{% url 'productos:lista' %}">
+          <img src="{% static 'img/vinilo.jpg' %}" alt="Logo" class="logo-marca" />
+          <span>VINILDUMB</span>
+        </a>
+
+        <nav class="navegacion">
+          <a href="{% url 'productos:lista' %}">Tienda</a>
+          <a href="{% url 'carrito:ver' %}">Carrito</a>
+          <a href="{% url 'productos:crear' %}">Administrar productos</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="contenido-principal">
+      {% if messages %}
+        <div class="mensajes">
+          {% for message in messages %}
+            <div class="mensaje mensaje-{{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% block content %}
+
+      {% endblock %}
+    </main>
+
+<footer class="footer">
+    <div class="footer-contenido">
+        <img src="{% static 'img/vinilo.jpg' %}" alt="Vinilo" class="icono-footer">
+        
+        <div class="footer-texto">
+            <p>&copy; {% now "Y" %} VINILDUMB — Tienda de vinilos.</p>
+            <p>Todos los derechos reservados.</p>
+        </div>
+
+        <img src="{% static 'img/vinilo.jpg' %}" alt="Vinilo" class="icono-footer">
+    </div>
+</footer>
+
+  </body>

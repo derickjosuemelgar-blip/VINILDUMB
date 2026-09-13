@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}{{ titulo }} | VINILDUMB{% endblock %}
+
+{% block content %}
+
+    <div class="encabezado-seccion">
+        <div>
+            <p class="etiqueta">Sec. Administrar</p>
+            <h1>{{ titulo }}</h1>
+        </div>
+    </div>
+
+    <form
+        class="formulario"
+        method="post"
+        enctype="multipart/form-data"
+    >
+        {% csrf_token %}
+
+        {{ formulario.non_field_errors }}
+
+        <div class="campo">
+            <label for="{{ formulario.nombre.id_for_label }}">
+                Nombre
+            </label>
+            {{ formulario.nombre }}
+            {{ formulario.nombre.errors }}
+        </div>
+
+        <div class="campo">
+            <label for="{{ formulario.precio.id_for_label }}">
+                Precio
+            </label>
+            {{ formulario.precio }}
+            {{ formulario.precio.errors }}
+        </div>
+
+        <div class="campo">
+            <label for="{{ formulario.cantidad_disponible.id_for_label }}">
+                Cantidad disponible
+            </label>
+            {{ formulario.cantidad_disponible }}
+            {{ formulario.cantidad_disponible.errors }}
+        </div>
+
+        <div class="campo">
+            <label for="{{ formulario.imagen.id_for_label }}">
+                Imagen
+            </label>
+            {{ formulario.imagen }}
+            {{ formulario.imagen.errors }}
+        </div>
+
+        {% if producto and producto.imagen %}
+            <div class="imagen-actual">
+                <p>Imagen actual:</p>
+                <img
+                    src="{{ producto.imagen.url }}"
+                    alt="{{ producto.nombre }}"
+                >
+            </div>
+        {% endif %}
+
+        <div class="acciones">
+            <button class="boton boton-principal" type="submit">
+                Guardar
+            </button>
+
+            <a
+                class="boton boton-secundario"
+                href="{% url 'productos:lista' %}"
+            >
+                Cancelar
+            </a>
+        </div>
+    </form>
+</section>
+{% endblock %}

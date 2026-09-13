@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Carrito | VINILDUMB{% endblock %}
+
+{% block content %}
+
+    <div class="encabezado-seccion">
+        <div>
+            <p class="etiqueta">VINILDUMB</p>
+            <h1>Mi carrito</h1>
+        </div>
+    </div>
+
+    {% if productos_carrito %}
+        <div class="tabla-contenedor">
+            <table class="tabla-carrito">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for item in productos_carrito %}
+                        <tr>
+                            <td>
+                                <div class="producto-tabla">
+                                    {% if item.producto.imagen %}
+                                        <img
+                                            src="{{ item.producto.imagen.url }}"
+                                            alt="{{ item.producto.nombre }}"
+                                        >
+                                    {% endif %}
+                                    <span>{{ item.producto.nombre }}</span>
+                                </div>
+                            </td>
+
+                            <td>
+                                Q {{ item.producto.precio|floatformat:2 }}
+                            </td>
+
+                            <td>
+                                <form
+                                    class="form-cantidad"
+                                    method="post"
+                                    action="{% url 'carrito:actualizar' item.producto.id %}"
+                                >
+                                    {% csrf_token %}
+                                    <input
+                                        type="number"
+                                        name="cantidad"
+                                        value="{{ item.cantidad }}"
+                                        min="1"
+                                        max="{{ item.producto.cantidad_disponible }}"
+                                        required
+                                    >
+                                    <button
+                                        class="boton boton-pequeno"
+                                        type="submit"
+                                    >
+                                        Actualizar
+                                    </button>
+                                </form>
+                            </td>
+
+                            <td>
+                                Q {{ item.subtotal|floatformat:2 }}
+                            </td>
+
+                            <td>
+                                <form
+                                    method="post"
+                                    action="{% url 'carrito:eliminar' item.producto.id %}"
+                                >
+                                    {% csrf_token %}
+                                    <button
+                                        class="boton boton-peligro boton-pequeno"
+                                        type="submit"
+                                    >
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="total-carrito">
+            <span>Total</span>
+            <strong>Q {{ total|floatformat:2 }}</strong>
+        </div>
+
+        <div class="acciones">
+</div>
+        <div class="contenedor-botones">    
+            
+    <a class="boton-regresar" href="{% url 'productos:lista' %}">
+        Regresar
+    </a>   
+
+    <a class="boton-pagar" href="{% url 'carrito:checkout' %}">
+        Pagar
+    </a>
+</div>
+        
+    {% else %}
+        <div class="carrito-vacio">
+            <h2>Tu carrito está vacío</h2>
+            <p>Agrega un vino desde la tienda para comenzar.</p>
+            <a
+                class="boton boton-principal"
+                href="{% url 'productos:lista' %}"
+            >
+                Ver vinilos
+            </a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

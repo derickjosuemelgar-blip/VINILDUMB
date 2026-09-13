@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Pedido realizado | VINILDUMB{% endblock %}
+
+{% block content %}
+
+<div class="confirmacion">
+
+    <p class="etiqueta">VINILDUMB</p>
+
+    <h1>¡Pedido realizado correctamente!</h1>
+
+    <p>
+        Tu pedido ha sido recibido correctamente.
+    </p>
+
+    <div class="resumen-confirmacion">
+
+        <p>
+            <strong>Método de pago:</strong>
+            {{ metodo_pago }}
+        </p>
+
+        <p>
+            <strong>Total:</strong>
+            Q {{ total|floatformat:2 }}
+        </p>
+
+        <p>
+            El pago se realizará al momento de recibir tu pedido.
+        </p>
+
+    </div>
+
+    <a
+        href="{% url 'productos:lista' %}"
+        class="boton boton-principal"
+    >
+        VOLVER A LA TIENDA
+    </a>
+
+</div>
+
+{% endblock %}
