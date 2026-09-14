@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-o&tu=h=1o@7qfi92!phccg1)8*c66&xpbb3=l#f48o2v$rb_p$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['tu_usuario.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['Dayixk.pythonanywhere.com']
 
 
 # Application definition
@@ -118,7 +118,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Agrega esta lista para indicarle a Django la ruta exacta de tu carpeta static:
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
