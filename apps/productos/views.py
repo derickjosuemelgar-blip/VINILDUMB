@@ -4,6 +4,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .forms import ProductoForm
 from .models import Producto
 
+from django.contrib.auth.decorators import user_passes_test
+def es_admin(user):
+    return user.is_authenticated and user.is_superuser
 
 def lista_productos(request):
     productos = Producto.objects.all().order_by("nombre")
@@ -14,7 +17,7 @@ def lista_productos(request):
         {"productos": productos},
     )
 
-
+@user_passes_test (es_admin, login_url="/login/")
 def crear_producto(request):
     if request.method == "POST":
         formulario = ProductoForm(
@@ -41,9 +44,9 @@ def crear_producto(request):
         },
     )
 
-
-def editar_producto(request, id):
-    producto = get_object_or_404(Producto, id=id)
+@user_passes_test(es_admin, login_url="/login/")
+def editar_producto(request, pk):
+    producto = get_object_or_404(Producto, id=pk)
 
     if request.method == "POST":
         formulario = ProductoForm(
@@ -72,9 +75,9 @@ def editar_producto(request, id):
         },
     )
 
-
-def eliminar_producto(request, id):
-    producto = get_object_or_404(Producto, id=id)
+@user_passes_test (es_admin, login_url="/login/")
+def eliminar_producto(request, pk):
+    producto = get_object_or_404(Producto, id=pk)
 
     if request.method == "POST":
         producto.delete()

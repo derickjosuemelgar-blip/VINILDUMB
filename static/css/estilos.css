@@ -23,6 +23,126 @@ body {
     line-height: 1.6;
 }
 
+.modal-vinilo {
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 900px;
+    width: 90%;
+    box-shadow: none;
+    overflow: visible;
+    padding: 0;
+}
+
+.disposicion-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.contenido-modal {
+    background-color: #ffe6eb;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 450px;
+    min-width: 300px;
+    box-shadow: 0 10px 25px #D4AF37;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.contenedor-decorativo {
+    flex: 0 1 200px;
+}
+
+.img-lateral {
+    width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    transform: rotate(-2deg);
+}
+
+.contenedor-decorativo :last-child .img-lateral {
+    transform: rotate(2deg);
+} 
+
+.modal-vinilo::backdrop {
+    background-color:#39b5be;
+    backdrop-filter: blur(6px);
+
+}
+
+/*
+.modal-vinilo::-webkit-backdrop {
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(0, 0, 0, 0.65);
+    background-blend-mode: overlay;
+} 
+*/
+
+.contenido-modal::-webkit-scrollbar {
+    width: 8px;
+}
+
+.contenido-modal::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+.contenido-modal::-webkit-scrollbar-thumb {
+    background: #D4AF37; 
+    border-radius: 8px;
+}
+
+.contenido-modal {
+    scrollbar-width: thin;
+    scrollbar-color: #D4AF37 transparent;
+}
+
+.btn-cerrar {
+    float: right;
+    background: transparent ;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-vinilo[data-tema="rock"],
+.modal-vinilo[data-tema="metal"] {
+    background-color: #1a1a1a;
+    color: #f5f5f5;
+    border: 2px solid #e50914;
+    font-family: "Heraldic Shadows", cursive, sans-serif;
+}
+
+.modal-vinilo[data-tema="reggae"]{
+    background-color:cadetblue ;
+    color: #d8b67f;
+    border: 2px solid #0d6546;
+    font-family: "Yomanica", cursive, sans-serif;
+}
+
+.modal-vinilo[data-tema="pop"]{
+    background-color:  #ffe6f2;
+    color: #4a0033;
+    border: 2px solid #ffe66fb2;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.modal-vinilo[data-tema="hip hop"]{
+    background-color: lavenderblush;
+    color: #e50914;
+    border: 2px solid #ffe6f2;
+    font-family: "font hip hop", cursive, sans-serif;
+}
+
 .texto-grafiti {
     font-family:  "sedgwick ave display", cursive;
     font-size: 3.5rem;
@@ -57,6 +177,24 @@ body {
 @font-face {
     font-family: "IronMaiden";
     src: url("../fonts/maiden.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Heraldic Shadows";
+    src: url("../fonts/font2.otf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Yomanica";
+    src: url("../fonts/font\ reggae.otf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "font hip hop";
+    src: url("../fonts/font\ hip\ hop.otf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
@@ -207,13 +345,15 @@ a {
     border-radius: 12px;
 
 }
-
 .tarjeta-producto {
-    overflow: hidden;
-    background: #D4AF37;
-    border: 1px solid #e5ddd4;
-    text-align: center;
-    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    background-color: #D4AF37; 
+    border-radius: 8px;      
 }
 
 .imagen-producto,
@@ -222,27 +362,34 @@ a {
     width: 100%;
     height: 260px;
     object-fit: cover;
+    background: #000000;
     
 }
 
 .imagen-vacia {
     display: grid;
     place-items: center;
-    background: #200d65;
+    background: #0d6546;
     color:#D4AF37;
 }
 
-.producto-contenido {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    padding: 18px;
-    background:#D4AF37;
-}
-
-.producto-contenido h2 {
+.producto-contenido h1,
+.producto-contenido h2,
+.producto-contenido h3 {
     margin-top: 0;
     color: #b11c1c;
+    font-size: 1.3rem;
+    text-align: center;
+    min-height: 2.8em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.producto-contenido form,
+.producto-contenido .acciones {
+    margin-top: auto;
 }
 
 .precio {

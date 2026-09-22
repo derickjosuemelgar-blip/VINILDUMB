@@ -12,17 +12,24 @@
             <p>Elige un vinilo y agrega la cantidad que necesitas al carrito.</p>
         </div>
 
+      {% if user.is_superuser %}
         <a class="boton boton-secundario" href="{% url 'productos:crear' %}">
             Administrar productos
         </a>
+      {% endif %}
     </div>
 
     <div class="productos-grid">
 
         {% for producto in productos %}
 
-            <article class="tarjeta-producto">
-
+            <article class="tarjeta-producto"
+            data-estilo = "{{producto.estilo | lower}}"
+            data-nombre="{{producto.nombre}}"
+            data-descripcion="{{producto.descripcion}}"
+            data-audio="{% if producto.audio_preview %}{{producto.audio_preview.url}}{% endif %}"
+            data-imagen-izq="{% if producto.imagen_izquierda %}{{ producto.imagen_izquierda.url }}{% endif %}"
+            data-imagen-der="{% if producto.imagen_derecha %}{{ producto.imagen_derecha.url }}{% endif %}">
                 {% if producto.imagen %}
                     <img
                         src="{{ producto.imagen.url }}"
@@ -34,6 +41,8 @@
                         Sin imagen
                     </div>
                 {% endif %}
+
+                <button type="button" class="btn-detalles">Ver detalles y escuchar</button>
 
                 <div class="producto-contenido">
 
@@ -75,21 +84,24 @@
                         </p>
                     {% endif %}
 
+                {%if user.is_superuser%}
+
                     <div class="acciones">
                         <a
                             class="boton boton-secundario"
-                            href="{% url 'productos:editar' producto.id %}"
+                            href="{% url 'productos:editar' producto.pk %}"
                         >
                             Editar
                         </a>
 
                         <a
                             class="boton boton-peligro"
-                            href="{% url 'productos:eliminar' producto.id %}"
+                            href="{% url 'productos:eliminar' producto.pk %}"
                         >
                             Eliminar
                         </a>
                     </div>
+                    {% endif %}
 
                 </div>
             </article>
@@ -100,7 +112,33 @@
 
         {% endfor %}
 
-    </div>
-</section>
+        <dialog id="modal-producto" class="modal-vinilo">
 
+            <div class="disposicion-modal">
+
+                <div class="contenedor-decorativo">
+                    <img id="img-modal-izq" src="" alt="Arte Izquierda" class= "img-lateral">
+                </div>
+
+                <div class="contenido-modal">
+                    <button id="btn-cerrar-modal" class="btn-cerrar">&times;</button>
+                    <h2 id="modal-nombre"></h2>
+                    <p id="modal-descripcion"></p>
+
+                    <div id="contenedor-audio" style="display: none;">
+                        <p><strong>Vista Previa del Tema Principal:</strong>
+                        <audio id="reproductor-audio" controls preload="none">
+                        <source id="audio-source" src="" type="audio/mpeg">
+                        Tu navegador no soporta el reproductor de audio. 
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="contenedor-decorativo">
+                    <img id="img-modal-der" src="" alt="Arte Derecha" class="img-lateral">
+                </div>
+                 
+            </div>
+        </dialog>
+</section>
 {% endblock %}

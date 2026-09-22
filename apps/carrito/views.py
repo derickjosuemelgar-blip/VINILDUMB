@@ -53,10 +53,9 @@ def ver_carrito(request):
     )
 
 def agregar_al_carrito(request, producto_id):
-    carrito = request.session.get('carrito', {})
-    producto_id_str = str(producto_id)
-
     if request.method == 'POST':
+        carrito = request.session.get('carrito', {})
+        producto_id_str = str(producto_id)
         cantidad = int(request.POST.get('cantidad', 1))
         
         if producto_id_str in carrito:
@@ -67,17 +66,8 @@ def agregar_al_carrito(request, producto_id):
         request.session['carrito'] = carrito
         request.session.modified = True
 
+        messages.success(request, "Producto agregado al carrito.")
     return redirect('productos:lista')
-
-    carrito[str(producto.id)] = nueva_cantidad
-    guardar_carrito(request, carrito)
-
-    messages.success(
-        request,
-        "Producto agregado al carrito.",
-    )
-
-    return redirect("productos:lista")
 
 def actualizar_carrito(request, id):
     if request.method != "POST":
