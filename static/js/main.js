@@ -10,9 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const imgIzq = document.getElementById('img-modal-izq');
     const imgDer = document.getElementById('img-modal-der');
 
+    // Escuchar clics en las tarjetas
     document.querySelectorAll('.tarjeta-producto').forEach(tarjeta => {
         tarjeta.addEventListener('click', (e) => {
 
+            // Si se hace clic en un botón que NO es de detalles (ej. agregar al carrito), ignorar
             if (e.target.tagName === 'BUTTON' && !e.target.classList.contains('btn-detalles')) {
                 return;
             }
@@ -25,22 +27,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const imagenIzqUrl = tarjeta.dataset.imagenIzq;
             const imagenDerUrl = tarjeta.dataset.imagenDer;
 
-            modalNombre.textContent = nombre;
-            modalDescripcion.textContent = descripcion;
+            if (modalNombre) modalNombre.textContent = nombre || '';
+            if (modalDescripcion) modalDescripcion.textContent = descripcion || '';
 
-            modal.setAttribute('data-tema', estilo || 'default');
+            if (modal) {
+                modal.setAttribute('data-tema', estilo || 'default');
 
-            if (imagenUrl) {
-                modal.style.setProperty('--bg-imagen', `url('${imagenUrl}')`);
-            } else {
-                modal.style.setProperty('--bg-imagen', 'none');
+                if (imagenUrl) {
+                    modal.style.setProperty('--bg-imagen', `url('${imagenUrl}')`);
+                } else {
+                    modal.style.setProperty('--bg-imagen', 'none');
+                }
             }
 
             if (imgIzq) {
                 if (imagenIzqUrl) {
                     imgIzq.src = imagenIzqUrl;
-                    imgIzq.parentElement.style.display = 'block';
-                } else {
+                    if (imgIzq.parentElement) imgIzq.parentElement.style.display = 'block';
+                } else if (imgIzq.parentElement) {
                     imgIzq.parentElement.style.display = 'none';
                 }
             }
@@ -48,42 +52,51 @@ document.addEventListener('DOMContentLoaded', () => {
             if (imgDer) {
                 if (imagenDerUrl) {
                     imgDer.src = imagenDerUrl;
-                    imgDer.parentElement.style.display = 'block';
-                } else {
+                    if (imgDer.parentElement) imgDer.parentElement.style.display = 'block';
+                } else if (imgDer.parentElement) {
                     imgDer.parentElement.style.display = 'none';
                 }
             }
 
-    
-            if (audioUrl) {
+            if (audioUrl && reproductorAudio && audioSource) {
                 audioSource.src = audioUrl;
                 reproductorAudio.load();
-                contenedorAudio.style.display = 'block';
+                if (contenedorAudio) contenedorAudio.style.display = 'block';
             } else {
-                contenedorAudio.style.display = 'none';
-                reproductorAudio.pause();
+                if (contenedorAudio) contenedorAudio.style.display = 'none';
+                if (reproductorAudio) reproductorAudio.pause();
             }
 
-            modal.showModal();
+            // Abrir el modal si existe
+            if (modal && typeof modal.showModal === 'function') {
+                modal.showModal();
+            }
         });
     });
 
     const cerrarModal = () => {
-        reproductorAudio.pause();
-        reproductorAudio.currentTime = 0;
-        modal.close();
+        if (reproductorAudio) {
+            reproductorAudio.pause();
+            reproductorAudio.currentTime = 0;
+        }
+        if (modal) modal.close();
     };
 
-    btnCerrar.addEventListener('click', cerrarModal);
+    // Validar si btnCerrar existe antes de agregar listener
+    if (btnCerrar) {
+        btnCerrar.addEventListener('click', cerrarModal);
+    }
 
-    modal.addEventListener('click', (e) => {
-        const rect = modal.getBoundingClientRect();
-        const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
-            rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
-        if (!isInDialog) {
-            cerrarModal();
-        }
-    });
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            const rect = modal.getBoundingClientRect();
+            const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+                rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
+            if (!isInDialog) {
+                cerrarModal();
+            }
+        });
+    }
 
     const botonesEliminar = document.querySelectorAll('.boton-peligro');
     botonesEliminar.forEach(boton => {
